@@ -91,7 +91,6 @@ function send() {
 // });
 
 $( document ).ready(function() {
-	o
 	setTimeout(function(){ location.reload(); }, 5000);
 });
 
