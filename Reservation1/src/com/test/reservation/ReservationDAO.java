@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -54,13 +56,92 @@ public class ReservationDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// 좌석 선택 후 자리 비움
 	public void reservationUpdate(ReservationDTO reservationDTO) {
 		try {
 			sql = "update boxing set isch=? where ch=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, reservationDTO.getIsch());
 			pstmt.setString(2, reservationDTO.getCh());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 전체 자리 유무 상태
+	public HashMap<String, ReservationDTO> reservationStatusMap() {
+		HashMap<String, ReservationDTO> map = new HashMap<>();
+		try {
+			sql = "select * from boxing";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ReservationDTO reservationDTO = new ReservationDTO();
+				reservationDTO.setIdx(rs.getInt("idx"));
+				reservationDTO.setCh(rs.getString("ch"));
+				reservationDTO.setIsch(rs.getInt("isch"));
+				map.put(rs.getString("ch"), reservationDTO);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	// 전체 자리 유무 상태
+	public ArrayList<ReservationDTO> reservationStatusList() {
+		ArrayList<ReservationDTO> list = new ArrayList<>();
+		try {
+			sql = "select * from boxing";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				ReservationDTO reservationDTO = new ReservationDTO();
+				reservationDTO.setIdx(rs.getInt("idx"));
+				reservationDTO.setCh(rs.getString("ch"));
+				reservationDTO.setIsch(rs.getInt("isch"));
+				list.add(reservationDTO);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	/*
+	 * 
+Drop table boxing
+
+CREATE TABLE `boxing` (
+	`idx` INT(11) NOT NULL AUTO_INCREMENT,
+	`ch` VARCHAR(10) NOT NULL,
+	`isch` TINYINT(4) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`idx`),
+	UNIQUE INDEX `ch` (`ch`)
+)
+	 */
+	public void reservationDrop() {
+		try {
+			sql = "Drop table boxing";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void reservationCreate() {
+		try {
+			sql = "CREATE TABLE `boxing` (\r\n" + 
+					"	`idx` INT(11) NOT NULL AUTO_INCREMENT,\r\n" + 
+					"	`ch` VARCHAR(10) NOT NULL,\r\n" + 
+					"	`isch` TINYINT(4) NOT NULL DEFAULT '0',\r\n" + 
+					"	PRIMARY KEY (`idx`),\r\n" + 
+					"	UNIQUE INDEX `ch` (`ch`)\r\n" + 
+					")";
+			pstmt = conn.prepareStatement(sql);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

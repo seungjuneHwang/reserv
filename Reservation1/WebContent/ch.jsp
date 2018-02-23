@@ -14,6 +14,7 @@ String.prototype.trim=function(){
 	return this.replace(p,"");
 
 }
+
 function send() {
 
 	var f=document.forms[0];
@@ -104,14 +105,17 @@ function send() {
 
 </head>
 <body>
-<form action="ch_form.jsp" method="post">
+<form action="${pageContext.request.contextPath}/init.reservation" method="post">
 
 행수 : <input type="text" name="row"><br/>
 
 열수 : <input type="text" name="col"><br/>
 
-<input type="button" value="보내기" onclick="send();"><br/>
+<input type="button" value="보내기" onclick="send();">
+
 
 </form>
+<br/><br/>
+<button onclick="location.href='${pageContext.request.contextPath}/select.reservation'">사물함 보기</button>
 </body>
 </html>

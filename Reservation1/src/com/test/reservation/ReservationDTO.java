@@ -3,11 +3,11 @@ package com.test.reservation;
 public class ReservationDTO {
 	private String ch;
 	private int isch;
-	private int b_idx;
+	private int idx;
 	
 	@Override
 	public String toString() {
-		return "ReservationDTO [b_idx=" + b_idx + "isch=" + isch + "ch=" + ch + "]";
+		return "ReservationDTO [b_idx=" + idx + "isch=" + isch + "ch=" + ch + "]";
 	}
 	
 	public int getIsch() {
@@ -18,12 +18,12 @@ public class ReservationDTO {
 		this.isch = isch;
 	}
 
-	public int getB_idx() {
-		return b_idx;
+	public int getIdx() {
+		return idx;
 	}
 
-	public void setB_idx(int b_idx) {
-		this.b_idx = b_idx;
+	public void setIdx(int idx) {
+		this.idx = idx;
 	}
 
 
