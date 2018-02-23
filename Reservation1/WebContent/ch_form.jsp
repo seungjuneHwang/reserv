@@ -60,13 +60,15 @@ td {
 
 <script type="text/javascript">
 
-function send() {
+function send(row, col) {
 
+	console.log(row);
+	console.log(col);
 	var f=document.forms[0];
 
 	 // 자바스트립트에서 표현식 사용 가능
-	var row="20";
-	var col="30";
+// 	var row="20";
+// 	var col="30";
 	var n=0;
 
 	for(var i=0; i<row*col; i++) {
@@ -91,7 +93,7 @@ function send() {
 // });
 
 $( document ).ready(function() {
-	setTimeout(function(){ location.reload(); }, 5000);
+// 	setTimeout(function(){ location.reload(); }, 5000);
 });
 
 </script>
@@ -110,7 +112,7 @@ int y = 0;  // 행렬 나누기
 
 for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
     String key = entry.getKey();
-    System.out.println(key);
+    //System.out.println(key);
     ReservationDTO value = entry.getValue();
     String [] sp = value.getCh().split(":");
 	x = Integer.parseInt(sp[0]);
@@ -159,12 +161,13 @@ for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
 			s = i + ":" + j;
 			//out.println(s);
 			ReservationDTO res = map.get(s);
-			
+			//System.out.println(s);
 			if (res.getIsch() == 0) {
 				out.println(res.getIsch());
-				out.print("<input type='checkbox' id='ch' name='ch'  value='"+ s+"' >");
+				out.print("<input type='checkbox' name='ch'  value='"+ s+"' >");
 			} else {
-				out.print("<input type='checkbox' id='ch' name='ch' disabled=true  value='"+ s+"' autocomplete='off'>");
+				out.println(res.getIsch());
+				out.print("<input type='checkbox' name='ch' disabled=true  value='"+ s+"' >");
 			}
 			
 			out.println("</td>");
@@ -179,7 +182,7 @@ for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
 <tr height="50">
       <td align="left">
            <input type="button" value="좌석예약"
-                 onclick="send();">
+                 onclick="send(<%=x %>, <%=y %> );">
       </td>
 </tr>
 

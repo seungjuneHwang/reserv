@@ -59,9 +59,9 @@ public class reservationFrontController extends HttpServlet {
 			// 확인용 테스트 코드
 			for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
 			    String key = entry.getKey();
-			    System.out.println(key);
+			    //System.out.println(key);
 			    ReservationDTO value = entry.getValue();
-			    System.out.println(value.getCh());
+			    //System.out.println(value.getCh());
 			}
 //			for (ReservationDTO bb : list) {
 //				System.out.println(bb.getCh());  
@@ -102,7 +102,7 @@ public class reservationFrontController extends HttpServlet {
 			
 		} else if (command.equals("/ok.reservation")) {
 			String sCheck = request.getParameter("ch");
-
+			System.out.println(sCheck);
 			reservationDTO.setCh(sCheck);
 			reservationDTO.setIsch(1);
 			reservationDAO.reservationUpdate(reservationDTO);
