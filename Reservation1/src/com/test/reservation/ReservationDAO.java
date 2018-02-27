@@ -48,14 +48,32 @@ public class ReservationDAO {
 			sql = "select ch, isch from boxing";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				reservationDTO.getCh();
-				reservationDTO.getIsch();
+			if (rs.next()) {
+				rs.getInt("isch");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public int reservationCheck(String ch) {
+		int isch = 0;
+		System.out.println(ch);
+		try {
+			sql = "select isch from boxing where ch = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, ch);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				isch = rs.getInt("isch");
+				System.out.println(isch);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return isch;
+	}
+	
 	
 	// 좌석 선택 후 자리 비움
 	public void reservationUpdate(ReservationDTO reservationDTO) {
@@ -87,6 +105,7 @@ public class ReservationDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println(map.size());
 		return map;
 	}
 	

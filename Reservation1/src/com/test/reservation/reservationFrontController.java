@@ -57,12 +57,12 @@ public class reservationFrontController extends HttpServlet {
 //			request.setAttribute("chlist", list);
 			request.setAttribute("chlist", map);
 			// 확인용 테스트 코드
-			for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
-			    String key = entry.getKey();
-			    //System.out.println(key);
-			    ReservationDTO value = entry.getValue();
-			    //System.out.println(value.getCh());
-			}
+//			for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
+//			    String key = entry.getKey();
+//			    //System.out.println(key);
+//			    ReservationDTO value = entry.getValue();
+//			    //System.out.println(value.getCh());
+//			}
 //			for (ReservationDTO bb : list) {
 //				System.out.println(bb.getCh());  
 //			}
@@ -81,11 +81,13 @@ public class reservationFrontController extends HttpServlet {
 				reservationDAO.reservationDrop();
 				reservationDAO.reservationCreate();
 			}
-			
+//			System.out.println(x);
+//			System.out.println(y);
 			ArrayList<String> strList = new ArrayList<>();
 			for(int i=1; i<=x; i++) {
 				for(int j=1; j<=y; j++) {
 					String s = i + ":" + j;
+//					System.out.println(s);
 					strList.add(s);
 				}
 			}
@@ -103,13 +105,20 @@ public class reservationFrontController extends HttpServlet {
 		} else if (command.equals("/ok.reservation")) {
 			String sCheck = request.getParameter("ch");
 			System.out.println(sCheck);
-			reservationDTO.setCh(sCheck);
-			reservationDTO.setIsch(1);
-			reservationDAO.reservationUpdate(reservationDTO);
+			out.print("선택자석:" + sCheck + "<br>");
+			if (reservationDAO.reservationCheck(sCheck) == 0) {
+				reservationDTO.setCh(sCheck);
+				reservationDTO.setIsch(1);
+				reservationDAO.reservationUpdate(reservationDTO);
+				out.print("예약 완료");
+			} else {
+				out.print("예약 불가");
+				
+			}
 			
-			String site = request.getContextPath() + "/select.reservation";
-			response.sendRedirect(site);
-			//out.print("선택자석:" + sCheck);
+//			String site = request.getContextPath() + "/select.reservation";
+//			response.sendRedirect(site);
+			
 		}
 	}
 

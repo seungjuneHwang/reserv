@@ -9,37 +9,6 @@
 request.setCharacterEncoding("utf-8");
 %>
 
-<%--  <%
-
-	request.setCharacterEncoding("utf-8");
-
-
-
-    String _row=request.getParameter("row");
-
-    String _col=request.getParameter("col");
-
-    
-
-    int row=10, col=15;
-
-    if(_row!=null)
-
-    	row=Integer.parseInt(_row);
-
-    if(_col!=null)
-
-    	col=Integer.parseInt(_col);
-
-    
-
-    int w=30+col*30+col/5*20;
-
-    if(col%5==0)
-
-    	w-=20;
-
-%> --%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,6 +63,14 @@ function send(row, col) {
 
 $( document ).ready(function() {
 // 	setTimeout(function(){ location.reload(); }, 5000);
+    $(".checkBoxId").change(function(){
+    	 console.log($(this).val());
+        if($(".checkBoxId").is(":checked")){
+            alert($(this).val());
+        }else{
+            alert("체크박스 체크 해제!");
+        }
+    });
 });
 
 </script>
@@ -106,7 +83,7 @@ HashMap<String, ReservationDTO> map = (HashMap<String, ReservationDTO>)request.g
 // String [] strX = 
 // ArrayList<Integer> listX = new ArrayList<Integer>();
 // ArrayList<Integer> listY = new ArrayList<Integer>();
-
+out.println(map.size());
 int x = 0;  // 행렬 나누기
 int y = 0;  // 행렬 나누기
 
@@ -117,7 +94,10 @@ for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
     String [] sp = value.getCh().split(":");
 	x = Integer.parseInt(sp[0]);
 	y = Integer.parseInt(sp[1]);
+	out.println(x);
+	out.println(y);
 }
+
 // for (ReservationDTO bb : list) {
 // 	String [] sp = bb.getCh().split(":");
 // 	listX.add(Integer.parseInt(sp[0]) );
@@ -138,7 +118,7 @@ for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
 <%
 	out.println("<td width='30'>&nbsp;</td>");
 
-    for(int i=1; i<=x; i++) {
+    for(int i=1; i<=y; i++) {
     	if(i!=1 && i%5==1) {
     		out.println("<td width='20'>&nbsp;</td>");
     	}
@@ -164,10 +144,10 @@ for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
 			//System.out.println(s);
 			if (res.getIsch() == 0) {
 				out.println(res.getIsch());
-				out.print("<input type='checkbox' name='ch'  value='"+ s+"' >");
+				out.print("<input type='checkbox' class='checkBoxId' name='ch'  value='"+ s+"' >");
 			} else {
 				out.println(res.getIsch());
-				out.print("<input type='checkbox' name='ch' disabled=true  value='"+ s+"' >");
+				out.print("<input type='checkbox' class='checkBoxId' name='ch' disabled=true  value='"+ s+"' >");
 			}
 			
 			out.println("</td>");
