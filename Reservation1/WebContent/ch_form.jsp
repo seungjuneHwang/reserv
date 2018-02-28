@@ -4,9 +4,9 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.test.reservation.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<% 
-request.setCharacterEncoding("utf-8");
+	pageEncoding="UTF-8"%>
+<%
+	request.setCharacterEncoding("utf-8");
 %>
 
 <!DOCTYPE html>
@@ -15,17 +15,20 @@ request.setCharacterEncoding("utf-8");
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-
-*{
-	padding: 0px; margin: 0px; font-size: 9pt;
+* {
+	padding: 0px;
+	margin: 0px;
+	font-size: 9pt;
 }
 
 td {
-	font-size: 9pt;font-family: 돋움;
+	font-size: 9pt;
+	font-family: 돋움;
 }
 </style>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <script type="text/javascript">
 
@@ -62,112 +65,129 @@ function send(row, col) {
 // });
 
 $( document ).ready(function() {
-// 	setTimeout(function(){ location.reload(); }, 5000);
-    $(".checkBoxId").change(function(){
-    	 console.log($(this).val());
-        if($(".checkBoxId").is(":checked")){
-            alert($(this).val());
-        }else{
-            alert("체크박스 체크 해제!");
-        }
-    });
+	$(".checkBoxId").change(function() {
+		if($(".checkBoxId").is(":checked")){
+			console.log($(this).val());
+			$.post("${pageContext.request.contextPath}/isok.reservation",
+	 				{ch: $(this).val()},
+	 				function(data, status) {
+	 					console.log(data);
+	 					if (data.trim() == "NO") {
+	 						alert("예약불가");
+	 						location.reload();
+	 					}
+	 				}
+	        );
+		}
+	});
 });
-
+/*
+ * // 	setTimeout(function(){ location.reload(); }, 5000);
+ $(".checkBoxId").change(function() {
+ 	console.log($(this).val());
+ 	if($(".checkBoxId").is(":checked")){
+ 		$.post("${pageContext.request.contextPath}/isok.reservation", 
+ 				{ch: $(this).val()}, 
+ 				function(data, status) {console.log(data);}
+         	    );
+ 		}
+ 	}
+ );
+ */
 </script>
 </head>
 <body>
-<br/><br/>
-<%
-//ArrayList<ReservationDTO> list = (ArrayList<ReservationDTO>)request.getAttribute("chlist");
-HashMap<String, ReservationDTO> map = (HashMap<String, ReservationDTO>)request.getAttribute("chlist");
-// String [] strX = 
-// ArrayList<Integer> listX = new ArrayList<Integer>();
-// ArrayList<Integer> listY = new ArrayList<Integer>();
-out.println(map.size());
-int x = 0;  // 행렬 나누기
-int y = 0;  // 행렬 나누기
+	<br />
+	<br />
+	<%
+		//ArrayList<ReservationDTO> list = (ArrayList<ReservationDTO>)request.getAttribute("chlist");
+		HashMap<String, ReservationDTO> map = (HashMap<String, ReservationDTO>) request.getAttribute("chlist");
+		// String [] strX = 
+		// ArrayList<Integer> listX = new ArrayList<Integer>();
+		// ArrayList<Integer> listY = new ArrayList<Integer>();
+		out.println(map.size());
+		int x = 0; // 행렬 나누기
+		int y = 0; // 행렬 나누기
 
-for(Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
-    String key = entry.getKey();
-    //System.out.println(key);
-    ReservationDTO value = entry.getValue();
-    String [] sp = value.getCh().split(":");
-	x = Integer.parseInt(sp[0]);
-	y = Integer.parseInt(sp[1]);
-	out.println(x);
-	out.println(y);
-}
-
-// for (ReservationDTO bb : list) {
-// 	String [] sp = bb.getCh().split(":");
-// 	listX.add(Integer.parseInt(sp[0]) );
-// 	listX.add(Integer.parseInt(sp[1]) );
-// // 	out.println(bb.getCh()+"<br> ");
-// }
-
-//  int x = Collections.max(listX).intValue();  // 행렬 나누기
-// int y = Collections.max(listY).intValue();  // 행렬 나누기
-
-%>
-
-
-<form action="ok.reservation" method="post">
-<table width="1030">
-<tr height="30">
-
-<%
-	out.println("<td width='30'>&nbsp;</td>");
-
-    for(int i=1; i<=y; i++) {
-    	if(i!=1 && i%5==1) {
-    		out.println("<td width='20'>&nbsp;</td>");
-    	}
-    	out.println("<td width='30' align='center'>"+i+"</td>");
-    }
-%>
-
-</tr>
-
-<%
-    String s;
-	for(int i=1; i<=x; i++) {
-		out.println("<tr height='25'>");
-		out.println("<td align='center'>"+i+"</td>");
-		for(int j=1; j<=y; j++) {
-			if(j!=1 && j%5==1) {
-				out.println("<td width='20' bgcolor='green'>&nbsp;</td>");
-			}
-				out.print("<td width='30' align='center'>");
-			s = i + ":" + j;
-			//out.println(s);
-			ReservationDTO res = map.get(s);
-			//System.out.println(s);
-			if (res.getIsch() == 0) {
-				out.println(res.getIsch());
-				out.print("<input type='checkbox' class='checkBoxId' name='ch'  value='"+ s+"' >");
-			} else {
-				out.println(res.getIsch());
-				out.print("<input type='checkbox' class='checkBoxId' name='ch' disabled=true  value='"+ s+"' >");
-			}
-			
-			out.println("</td>");
+		for (Map.Entry<String, ReservationDTO> entry : map.entrySet()) {
+			String key = entry.getKey();
+			//System.out.println(key);
+			ReservationDTO value = entry.getValue();
+			String[] sp = value.getCh().split(":");
+			x = Integer.parseInt(sp[0]);
+			y = Integer.parseInt(sp[1]);
+			out.println(x);
+			out.println(y);
 		}
-		out.println("</tr>");
-	}
-%>
-</table>
+
+		// for (ReservationDTO bb : list) {
+		// 	String [] sp = bb.getCh().split(":");
+		// 	listX.add(Integer.parseInt(sp[0]) );
+		// 	listX.add(Integer.parseInt(sp[1]) );
+		// // 	out.println(bb.getCh()+"<br> ");
+		// }
+
+		//  int x = Collections.max(listX).intValue();  // 행렬 나누기
+		// int y = Collections.max(listY).intValue();  // 행렬 나누기
+	%>
 
 
-<table width="1030">
-<tr height="50">
-      <td align="left">
-           <input type="button" value="좌석예약"
-                 onclick="send(<%=x %>, <%=y %> );">
-      </td>
-</tr>
+	<form action="ok.reservation" method="post">
+		<table width="1030">
+			<tr height="30">
 
-</table>
+				<%
+					out.println("<td width='30'>&nbsp;</td>");
 
-</form>
+					for (int i = 1; i <= y; i++) {
+						if (i != 1 && i % 5 == 1) {
+							out.println("<td width='20'>&nbsp;</td>");
+						}
+						out.println("<td width='30' align='center'>" + i + "</td>");
+					}
+				%>
+
+			</tr>
+
+			<%
+				String s;
+				for (int i = 1; i <= x; i++) {
+					out.println("<tr height='25'>");
+					out.println("<td align='center'>" + i + "</td>");
+					for (int j = 1; j <= y; j++) {
+						if (j != 1 && j % 5 == 1) {
+							out.println("<td width='20' bgcolor='green'>&nbsp;</td>");
+						}
+						out.print("<td width='30' align='center'>");
+						s = i + ":" + j;
+						//out.println(s);
+						ReservationDTO res = map.get(s);
+						//System.out.println(s);
+						if (res.getIsch() == 0) {
+							out.println(res.getIsch());
+							out.print("<input type='checkbox' class='checkBoxId' name='ch'  value='" + s + "' >");
+						} else {
+							out.println(res.getIsch());
+							out.print("<input type='checkbox' class='checkBoxId' name='ch' disabled=true  value='" + s
+									+ "' >");
+						}
+
+						out.println("</td>");
+					}
+					out.println("</tr>");
+				}
+			%>
+		</table>
+
+
+		<table width="1030">
+			<tr height="50">
+				<td align="left"><input type="button" value="좌석예약"
+					onclick="send(<%=x%>, <%=y%> );"></td>
+			</tr>
+
+		</table>
+
+	</form>
 </body>
 </html>

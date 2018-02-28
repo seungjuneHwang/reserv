@@ -119,6 +119,20 @@ public class reservationFrontController extends HttpServlet {
 //			String site = request.getContextPath() + "/select.reservation";
 //			response.sendRedirect(site);
 			
+		} else if (command.equals("/isok.reservation")) {
+			String sCheck = request.getParameter("ch");
+//			System.out.println(sCheck);
+//			out.print("선택자석:" + sCheck + "<br>");
+			if (reservationDAO.reservationCheck(sCheck) == 0) {
+				out.print("OK");
+			} else {
+				out.print("NO");
+				
+			}
+			
+//			String site = request.getContextPath() + "/select.reservation";
+//			response.sendRedirect(site);
+			
 		}
 	}
 
